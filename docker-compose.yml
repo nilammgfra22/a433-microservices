@@ -1,0 +1,30 @@
+# mendefeinisikan versi docker compose
+version: '3.7'
+
+# mendefinisikan services
+services:
+  # service 1 dengan nama item-app
+  item-app:
+    # menggunakan image dari docker hub dengan tag v1
+    image: nmazzahra/item-app:v1
+    # selalu restart jika container mati karena server restart, dll
+    restart: always
+    # expose port 8080 di host ke port 8080 di container
+    ports:
+      - 80:8080
+    # tergantung pada service item-db
+    depends_on:
+      - item-db
+  # service 2 dengan nama item-db
+  item-db:
+    # menggunakan image mongo dengan tag 3
+    image: mongo:3
+    # selalu restart jika container mati karena server restart, dll
+    restart: always
+    # volumes yang digunakan
+    volumes:
+      - app-db:/data/db
+
+# mendefinisikan volumes
+volumes:
+  app-db:
