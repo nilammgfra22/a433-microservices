@@ -1,0 +1,68 @@
+# Specify the API version being used
+apiVersion: apps/v1
+# Specify the type of object to be created
+kind: StatefulSet
+# Specify the metadata for the object being created
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# Specify the specifications for the object being created
+spec:
+  selector:
+    # Specify the label to be used
+    matchLabels:
+      app: mongo
+  serviceName: mongo
+  # Specify the number of replicas to be created
+  replicas: 1
+  # Specify the time needed to create a new pod
+  minReadySeconds: 10
+  # Specify the template to be used
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      # Specify the time after which the pod will be terminated
+      terminationGracePeriodSeconds: 10
+      # Specify the container to be used
+      containers:
+        # Specify the name of the container
+        - name: mongo
+          # Specify the image to be used
+          image: mongo:3
+          # Specify the image pull policy
+          imagePullPolicy: IfNotPresent
+          # Specify the environment variables to be used
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          # Specify the port to be used
+          ports:
+            - containerPort: 27017
+              name: mongo
+          # Specify the volumes to be used
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+            - name: mongo-configmap
+              mountPath: /config
+            - name: mongo-secret
+              mountPath: /etc/mongo-credentials
+      # Specify the volumes to be used
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+        - name: mongo-configmap
+          configMap:
+            name: mongo-configmap
+            items:
+              - key: mongo.conf
+                path: mongo.conf
+        - name: mongo-secret
+          secret:
+            secretName: mongo-secret

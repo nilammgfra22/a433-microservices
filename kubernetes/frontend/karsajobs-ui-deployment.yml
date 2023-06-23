@@ -1,0 +1,42 @@
+# Specify the Kubernetes API version being used
+apiVersion: apps/v1
+# Specify the type of object to be created
+kind: Deployment
+# Specify the metadata for the object being created
+metadata:
+  # Specify the name of the object being created
+  name: app-frontend
+  # Specify labels for the object being created
+  labels:
+    app: frontend
+# Specify the specifications for the object being created
+spec:
+  # Specify the number of replicas to be created
+  replicas: 1
+  # Specify the selector to be used
+  selector:
+    # Specify the label to be used
+    matchLabels:
+      app: frontend
+  # Specify the template to be used
+  template:
+    # Specify the metadata for the template to be used
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      # Specify the container to be used
+      containers:
+        # Specify the name of the container to be used
+        - name: karsajobs-ui
+          # Specify the image to be used
+          image: nmazzahra/karsajobs-ui:latest
+          # Specify the image pull policy
+          imagePullPolicy: IfNotPresent
+          # Specify the port to be used
+          ports:
+            - containerPort: 8000
+          # Specify the environment variable to be used
+          env:
+            - name: VUE_APP_BACKEND
+              value: http://10.100.118.214:31405

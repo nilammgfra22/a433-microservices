@@ -1,0 +1,41 @@
+# Specify the Kubernetes API version being used
+apiVersion: v1
+# Specify the type of object to be created
+kind: PersistentVolume
+# Specify the metadata for the object being created
+metadata:
+  name: mongo-pv
+  labels:
+    type: local
+spec:
+  # Specify the storage class name
+  storageClassName: manual
+  # Specify the storage capacity
+  capacity:
+    storage: 1Gi
+  # Specify the access mode
+  accessModes:
+    - ReadWriteOnce
+  # Specify the host path
+  hostPath:
+    path: "/data/db"
+---
+# Specify the Kubernetes API version being used
+apiVersion: v1
+# Specify the type of object to be created
+kind: PersistentVolumeClaim
+# Specify the metadata for the object being created
+metadata:
+  name: mongo-pv-claim
+  labels:
+    app: mongo
+spec:
+  # Specify the storage class name
+  storageClassName: manual
+  # Specify the access mode
+  accessModes:
+    - ReadWriteOnce
+  # Specify the storage capacity
+  resources:
+    requests:
+      storage: 1Gi

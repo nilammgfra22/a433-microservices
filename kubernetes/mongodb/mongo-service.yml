@@ -1,0 +1,19 @@
+# Specify the API version being used
+apiVersion: v1
+# Specify the type of object to be created
+kind: Service
+# Specify the metadata for the object being created
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# Specify the specifications for the object being created
+spec:
+  # Specify the port to be used
+  ports:
+    - port: 27017
+  # Specify the selector to be used
+  selector:
+    app: mongo
+  # Specify the type of clusterIP to be used
+  clusterIP: None

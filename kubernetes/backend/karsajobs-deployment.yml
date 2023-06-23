@@ -1,0 +1,56 @@
+# Specify the Kubernetes API version being used
+apiVersion: apps/v1
+# Specify the type of object to be created
+kind: Deployment
+# Specify the metadata for the object being created
+metadata:
+  # Specify the name of the object being created
+  name: app-backend
+  # Specify labels for the object being created
+  labels:
+    app: backend
+# Specify the specifications for the object being created
+spec:
+  # Specify the number of replicas to be created
+  replicas: 1
+  # Specify the selector to be used
+  selector:
+    # Specify the label to be used
+    matchLabels:
+      app: backend
+  # Specify the template to be used
+  template:
+    # Specify the metadata for the template to be used
+    metadata:
+      labels:
+        app: backend
+    spec:
+      # Specify the container to be used
+      containers:
+        # Specify the name of the container to be used
+        - name: karsajobs
+          # Specify the image to be used
+          image: nmazzahra/karsajobs:latest
+          # Specify the image pull policy
+          imagePullPolicy: IfNotPresent
+          # Specify the port to be used
+          ports:
+            - containerPort: 8080
+          # Specify the environment variables to be used
+          env:
+            - name: APP_PORT
+              value: "8080"
+            - name: MONGO_HOST
+              value: "mongo"
+            - name: MONGO_USER
+              valueFrom:
+                # Get the value from mongo-secret
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_PASS
+              valueFrom:
+                # Get the value from mongo-secret
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD

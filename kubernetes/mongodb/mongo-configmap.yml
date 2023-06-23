@@ -1,0 +1,12 @@
+# Specify the Kubernetes API version being used
+apiVersion: v1
+# Specify the type of object to be created
+kind: ConfigMap
+# Specify the metadata for the object being created
+metadata:
+  name: mongo-configmap
+data:
+  # Specify the content of the mongo.conf file
+  mongo.conf: |
+    storage:
+      dbpath: /data/db

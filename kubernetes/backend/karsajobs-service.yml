@@ -1,0 +1,21 @@
+# Specify the Kubernetes API version being used
+apiVersion: v1
+# Specify the type of object to be created
+kind: Service
+# Specify the metadata for the object being created
+metadata:
+  # Specify the name of the object being created
+  name: backend
+  # Specify labels for the object being created
+  labels:
+    app: backend
+# Specify the specifications for the object being created
+spec:
+  # Specify the port to be used
+  ports:
+    - port: 8080
+  # Specify the selector to be used
+  selector:
+    app: backend
+  # Specify the type of service to be used
+  type: NodePort
