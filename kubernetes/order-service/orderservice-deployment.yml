@@ -1,0 +1,38 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: apps/v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Deployment
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  # Menentukan nama dari objek yang akan dibuat
+  name: order-service
+  # Menentukan label dari objek yang akan dibuat
+  labels:
+    app: order-service
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Spesifikasikan jumlah replika yang akan dibuat
+  replicas: 1
+  # Menentukan selector yang akan digunakan
+  selector:
+    # Menentukan label yang akan digunakan
+    matchLabels:
+      app: order-service
+  # Menentukan template yang akan digunakan
+  template:
+    # Menentukan metadata dari template yang akan digunakan
+    metadata:
+      labels:
+        app: order-service
+    spec:
+      # Menentukan container yang akan digunakan
+      containers:
+        # Menentukan nama container yang akan digunakan
+        - name: order-service
+          # Menentukan image yang akan digunakan
+          image: nmazzahra/order-service:latest
+          # Menentukan kebijakan pull image
+          imagePullPolicy: IfNotPresent
+          # Menentukan port yang akan digunakan
+          ports:
+            - containerPort: 3000

@@ -1,0 +1,51 @@
+# Menentukan versi API yang digunakan
+apiVersion: apps/v1
+#  Menentukan jenis objek yang akan dibuat
+kind: StatefulSet
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  selector:
+    # Menentukan label yang akan digunakan
+    matchLabels:
+      app: rabbitmq
+  serviceName: rabbitmq
+  # Menentukan jumlah replika yang akan dibuat
+  replicas: 1
+  # Menentukan template yang akan digunakan
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      # Menentukan container yang akan digunakan
+      containers:
+        # Menentukan nama container yang akan digunakan
+        - name: rabbitmq
+          # Menentukan image yang akan digunakan
+          image: rabbitmq:3.8-management-alpine
+          # Menentukan kebijakan pull image
+          imagePullPolicy: IfNotPresent
+          # Menentukan port yang akan digunakan
+          ports:
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 15672
+              name: management
+          # Menentukan volume yang akan digunakan
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+  # Menentukan volume yang akan digunakan
+  volumeClaimTemplates:
+    - metadata:
+        name: rabbitmq-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi

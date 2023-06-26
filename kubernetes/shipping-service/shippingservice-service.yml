@@ -1,0 +1,21 @@
+# Menentukan versi Kubernetes API yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Service
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  #  Menentukan nama dari objek yang akan dibuat
+  name: shipping-service
+  # Menentukan label dari objek yang akan dibuat
+  labels:
+    app: shipping-service
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Menentukan port yang akan digunakan
+  ports:
+    - port: 3001
+  # Menentukan selektor yang akan digunakan
+  selector:
+    app: shipping-service
+  # Menentukan tipe service yang akan digunakan
+  type: NodePort
